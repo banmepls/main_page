@@ -86,7 +86,6 @@ body {
     letter-spacing: inherit;
     text-align: inherit;
     box-sizing: border-box;
-    display: inline-block;
     position: relative;
     z-index: 1;
     vertical-align: top;
