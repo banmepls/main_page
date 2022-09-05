@@ -16,6 +16,14 @@ body {
     min-width: 320px;
 }
 
+
+
+/*
+    Global Navigation
+*/
+
+
+
 .global_nav {
     unicode-bidi: isolate;
     font-weight: normal;
@@ -117,4 +125,90 @@ body {
     max-width: 2560px;
     margin: 0 auto;
     padding-top: 44px;
+}
+
+
+
+/*
+    Section Module
+*/
+
+
+
+.section_module {
+    display: block;
+    position: relative;
+}
+
+.section_head {
+    pointer-events: none;
+    display: flex;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    padding-top: 80px;
+}
+
+.section_headline {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    flex-shrink: 1;
+    font-size: 56px;
+    line-height: 1.07143;
+    font-weight: 600;
+    letter-spacing: -.005em;
+    font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+
+.section_subhead {
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    flex-shrink: 1;
+    color: #1d1d1f;
+    font-size: 28px;
+    line-height: 1.10722;
+    font-weight: 400;
+    letter-spacing: .004em;
+    font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    margin-top: 6px;
+}
+
+.section_headlink {
+    font-style: normal;
+    text-align: center;
+    font-size: 21px;
+    line-height: 1.381;
+    font-weight: 400;
+    font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+    color: #06c;
+    letter-spacing: inherit;
+    z-index: 4;
+    text-decoration: none;
+    pointer-events: all;
+    margin-left: -4px;
+}
+
+.section_image {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    z-index: 0;
+    width: -webkit-fill-available;
 }
