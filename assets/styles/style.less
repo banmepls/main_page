@@ -35,7 +35,14 @@ p {
     position: relative;
     max-width: 2560px;
     margin: 0 auto;
-    padding-top: 44px;
+
+    @media @mobile {
+        padding-top: 48px;
+    }
+
+    @media @laptop {
+        padding-top: 44px;
+    }
 }
 
 /* Block */
