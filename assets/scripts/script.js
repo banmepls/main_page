@@ -12,8 +12,6 @@ function globalNavMenuIcon(x) {
 window.onscroll = () => {
   let pos = window.scrollY;
   if (window.getComputedStyle(sectionImage).height == "800px") {
-    sectionHead.style.top = `${pos}px`;
-    sectionImage.style.top = `${pos}px`;
     sectionImage.style.left = `${-pos}px`;
   }
 }
