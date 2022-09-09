@@ -79,12 +79,13 @@
     z-index: 2;
     padding-left: max(22px,env(safe-area-inset-left));
     padding-right: max(22px,env(safe-area-inset-right));
+    display: block;
+    overflow: hidden;
 
     @media @mobile {
         padding: 0;
         background-color: #000000;
-        height: 1500px;
-        display: none;
+        height: 0;
     }
 
     @media @laptop {
@@ -92,7 +93,6 @@
         padding: 0 22px;
         background-color: #00000000;
         height: 100%;
-        display: block;
     }
 
     @media @hd-screen {
