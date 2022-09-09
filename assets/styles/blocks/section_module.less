@@ -29,6 +29,7 @@
     flex-direction: column;
     width: -webkit-fill-available;
     padding-top: 150px;
+    align-items: center;
 
     @media @mobile {
         padding-top: 30px;
@@ -101,7 +102,7 @@
     flex-shrink: 1;
     color: #1d1d1f;
     font-size: 28px;
-    line-height: 1.10722;
+    line-height: 1.722;
     font-weight: 400;
     letter-spacing: .004em;
     font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
@@ -121,6 +122,7 @@
     text-decoration: none;
     pointer-events: all;
     margin-left: -4px;
+    cursor: pointer;
 }
 
 .section_image {
@@ -143,4 +145,38 @@
         height: auto;
         position: relative;
     }
+}
+
+.section_container {
+    max-width: 1380px;
+    height: 600px;
+    margin: 100px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FBFBFD;
+}
+
+.section_container_info {
+    width: -webkit-fill-available;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+        content: "";
+        position: absolute;
+        width: 630px;
+        height: 600px;
+        background-color: rgba(0,0,0,0.25);
+    }
+}
+
+.section_container_image {
+    max-width: 750px;
 }

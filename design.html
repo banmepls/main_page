@@ -47,7 +47,36 @@
 			</div>
 		</nav>
 		<main class="main" role="main">
-			<section>Design Page</section>
+			<section>
+				<div class="section_module">
+					<div class="section_head">
+						<h2 class="section_headline">Web Design</h2>
+						<h3 class="section_subhead">Explore the User Interface and User Experience design based pages.</h3>
+					</div>
+					<div class="section_container" style="margin-top: 400px;">
+						<div class="section_container_info" style="background-image: url(images/photo_1.jpg)">
+							<h2 class="section_headline" style="color: #f5f5f7;">ROYAL</h2>
+							<h3 class="section_subhead" style="color: #f5f5f7;">A design for an outfit page</h3>
+							<a class="section_headlink" onclick="openDesign(1)">Explore the concept</a>
+						</div>
+						<img class="section_container_image" src="images/design_2.jpg" alt="">
+					</div>
+					<div class="section_container">
+						<img class="section_container_image" src="images/design_3.jpg" alt="">
+						<div class="section_container_info" style="background-image: url(images/photo_2.jpg)">
+							<h2 class="section_headline" style="color: #f5f5f7;">SWIFT TRAVEL</h2>
+							<h3 class="section_subhead" style="color: #f5f5f7;">A design for a travel page</h3>
+							<a class="section_headlink" onclick="openDesign(2)">Explore the concept</a>
+						</div>
+					</div>
+				</div>
+				<div class="design_pop" id="design_img1">
+					<img onclick="openDesign(1)" class="design_img" src="images/web_1.jpg" alt="">
+				</div>
+				<div class="design_pop" id="design_img2">
+					<img onclick="openDesign(2)" class="design_img" src="images/web_2.jpg" alt="">
+				</div>
+			</section>
 		</main>
 		<script src="https://code.jquery.com/jquery-3.6.1.js"></script>
 		<script src="assets/scripts/script.js"></script>

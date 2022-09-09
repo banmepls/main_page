@@ -1,0 +1,39 @@
+// main: ../style.less
+
+.design_pop {
+    overflow: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: rgba(0,0,0,0.8);
+    height: 0;
+    margin: 0 auto;
+
+    @media @tablet {
+        width: 700px;
+    }
+
+    @media @laptop {
+        width: 960px;
+    }
+
+    @media @hd-screen {
+        width: 1080px;
+    }
+
+    @media @laptop-l {
+        width: 1280px;
+    }
+
+    @media @fhd-screen {
+        width: 1380px;
+    }
+}
+
+.design_img {
+    cursor: pointer;
+    width: -webkit-fill-available;
+}
