@@ -2,6 +2,8 @@ let toggle = true;
 let toggleImg1 = true;
 let toggleImg2 = true;
 const globalNavDiv = document.getElementById("globalNavDiv");
+const globalNavMenu = document.getElementById("globalNavMenuIcon");
+const sectionHead = document.getElementsByClassName("section_head")[0];
 const sectionImage = document.getElementsByClassName("section_image")[0];
 
 function globalNavMenuIcon(x) {
@@ -27,6 +29,7 @@ function openDesign(Img) {
     }
     toggleImg1 = !toggleImg1;
   }
+
   if (Img == 2) {
     if (toggleImg2) {
       $(designImage2).animate({height:window.innerHeight}, 600);
@@ -39,10 +42,20 @@ function openDesign(Img) {
 }
 
 window.onscroll = () => {
-  if (!toggle) {
-    let pos = window.scrollY;
-    if (window.getComputedStyle(sectionImage).height == "800px") {
-      sectionImage.style.left = `${-pos}px`;
+  if (globalNavMenu.style.display != 'none') {
+    if (sectionImage) {
+      let pos = window.scrollY;
+      if (window.getComputedStyle(sectionImage).height == "800px") {
+        sectionImage.style.left = `${-pos}px`;
+      }
+    }
+    else {
+      if (window.scrollY >= 400) {
+        sectionHead.style.display = "none";
+      }
+      else {
+        sectionHead.style.display = "flex";
+      }
     }
   }
 }

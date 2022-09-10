@@ -8,7 +8,7 @@
     height: 1600px;
 
     @media @mobile {
-        height: 1650px;
+        height: 1700px;
     }
 
     @media @tablet {
@@ -32,13 +32,13 @@
     align-items: center;
 
     @media @mobile {
-        padding-top: 30px;
+        padding-top: 50px;
         margin-top: 48px;
         position: fixed;
     }
 
     @media @tablet {
-        padding-top: 50px;
+        padding-top: 100px;
     }
 
     @media @laptop {
@@ -107,6 +107,14 @@
     letter-spacing: .004em;
     font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
     margin-top: 6px;
+
+    @media @mobile {
+        max-width: 300px;
+    }
+
+    @media @tablet {
+        max-width: 600px;
+    }
 }
 
 .section_headlink {
@@ -138,6 +146,11 @@
         width: auto;
         height: 800px;
         position: fixed;
+        margin-top: 50px;
+    }
+
+    @media @tablet {
+        margin-top: 100px;
     }
 
     @media @laptop {
@@ -148,13 +161,43 @@
 }
 
 .section_container {
-    max-width: 1380px;
-    height: 600px;
     margin: 100px auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #FBFBFD;
+    z-index: 2;
+    position: relative;
+
+    @media @mobile {
+        max-width: 425px;
+        height: 600px;
+        flex-direction: column;
+    }
+
+    @media @tablet {
+        max-width: 700px;
+        height: 300px;
+        flex-direction: row;
+    }
+
+    @media @laptop {
+        max-width: 900px;
+        height: 400px;
+    }
+
+    @media @hd-screen {
+        max-width: 1024px;
+    }
+
+    @media @laptop-l {
+        max-width: 1280px;
+        height: 600px;
+    }
+
+    @media @fhd-screen {
+        max-width: 1380px;
+    }
 }
 
 .section_container_info {
@@ -167,16 +210,94 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
 
     &::before {
         content: "";
         position: absolute;
-        width: 630px;
-        height: 600px;
         background-color: rgba(0,0,0,0.25);
+        @media @mobile {
+            width: 425px;
+            height: 300px;
+        }
+    
+        @media @tablet {
+            width: 330px;
+            height: 300px;
+        }
+    
+        @media @laptop {
+            width: 480px;
+            height: 400px;
+        }
+    
+        @media @hd-screen {
+            height: 400px;
+        }
+    
+        @media @laptop-l {
+            width: 660px;
+            height: 600px;
+        }
+    
+        @media @fhd-screen {
+            width: 630px;
+        }
+    }
+
+    @media @mobile {
+        max-width: 425px;
+        height: 300px;
+    }
+
+    @media @tablet {
+        max-width: 330px;
+    }
+
+    @media @laptop {
+        max-width: 480px;
+        height: 400px;
+    }
+
+    @media @laptop-l {
+        max-width: 660px;
+        height: 600px;
+    }
+
+    @media @fhd-screen {
+        max-width: 750px;
     }
 }
 
 .section_container_image {
-    max-width: 750px;
+    width: -webkit-fill-available;
+    height: auto;
+
+    @media @mobile {
+        max-width: 425px;
+        max-height: 300px;
+    }
+
+    @media @tablet {
+        max-width: 370px;
+    }
+
+    @media @laptop {
+        max-width: 420px;
+        max-height: 400px;
+    }
+
+    @media @hd-screen {
+        max-width: 580px;
+    }
+
+    @media @laptop-l {
+        max-width: 620px;
+        max-height: 600px;
+    }
+
+    @media @fhd-screen {
+        max-width: 750px;
+    }
 }
