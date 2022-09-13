@@ -3,8 +3,9 @@ let toggleImg1 = true;
 let toggleImg2 = true;
 const globalNavDiv = document.getElementById("globalNavDiv");
 const globalNavMenu = document.getElementById("globalNavMenuIcon");
-const sectionHead = document.getElementsByClassName("section_head")[0];
+const designHead = document.getElementsByClassName("design_head")[0];
 const sectionImage = document.getElementsByClassName("section_image")[0];
+const sectionImage2 = document.getElementsByClassName("section_image")[1];
 
 function globalNavMenuIcon(x) {
   x.classList.toggle("change");
@@ -45,16 +46,21 @@ window.onscroll = () => {
   if (globalNavMenu.style.display != 'none') {
     if (sectionImage) {
       let pos = window.scrollY;
-      if (window.getComputedStyle(sectionImage).height == "800px") {
+
+      if (window.getComputedStyle(sectionImage).width == "1200px") {
         sectionImage.style.left = `${-pos}px`;
+      }
+
+      if (window.getComputedStyle(sectionImage2).width == "1200px") {
+        sectionImage2.style.left = `${pos - 2000}px`;
       }
     }
     else {
       if (window.scrollY >= 400) {
-        sectionHead.style.display = "none";
+        designHead.style.display = "none";
       }
       else {
-        sectionHead.style.display = "flex";
+        designHead.style.display = "flex";
       }
     }
   }

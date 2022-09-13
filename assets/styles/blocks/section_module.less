@@ -3,42 +3,41 @@
 .section_module {
     display: block;
     position: relative;
-    overflow: hidden;
+    contain: paint;
     width: 100%;
     height: 1600px;
+    background-color: #FBFBFD;
 
     @media @mobile {
-        height: 1700px;
-    }
-
-    @media @tablet {
-        height: 1250px;
+        height: 1200px;
     }
 
     @media @laptop {
         height: auto;
+        margin-bottom: 10px;
     }
 }
 
 .section_head {
     pointer-events: none;
     display: flex;
-    left: 0px;
-    top: 0px;
-    z-index: 1;
     flex-direction: column;
     width: -webkit-fill-available;
-    padding-top: 150px;
     align-items: center;
+    z-index: 100;
 
     @media @mobile {
-        padding-top: 100px;
-        margin-top: 48px;
-        position: fixed;
+        position: sticky;
+        top: 200px;
+        margin-bottom: 700px;
     }
 
     @media @laptop {
+        top: 0;
+        left: 0;
+        padding-top: 50px;
         margin-top: 0;
+        margin-bottom: 0;
         position: absolute;
     }
 
@@ -130,25 +129,23 @@
 }
 
 .section_image {
-    left: 0px;
     top: 0px;
     z-index: 0;
     max-width: 1920px;
-    display: block;
     margin-left: auto;
     margin-right: auto;
 
     @media @mobile {
-        width: auto;
-        height: 800px;
-        position: fixed;
-        margin-top: 100px;
+        width: 1200px;
+        height: auto;
+        position: absolute;
+        margin-top: 300px;
     }
 
     @media @laptop {
         width: -webkit-fill-available;
-        height: auto;
         position: relative;
+        margin-top: 0;
     }
 }
 

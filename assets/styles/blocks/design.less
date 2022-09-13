@@ -1,5 +1,48 @@
 // main: ../style.less
 
+.design_module {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 1600px;
+    
+    @media @mobile {
+        height: 1700px;
+    }
+    
+    @media @tablet {
+        height: 1250px;
+    }
+    
+    @media @laptop {
+        height: auto;
+    }
+}
+
+.design_head {
+    pointer-events: none;
+    display: flex;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    padding-top: 150px;
+    align-items: center;
+    
+    @media @mobile {
+        padding-top: 100px;
+        margin-top: 48px;
+        position: fixed;
+    }
+    
+    @media @laptop {
+        margin-top: 0;
+        position: absolute;
+    }
+}
+
 .design_pop {
     overflow: auto;
     position: fixed;
