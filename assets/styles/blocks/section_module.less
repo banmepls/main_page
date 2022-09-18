@@ -150,10 +150,9 @@
 }
 
 .section_container {
-    margin: 100px auto;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-end;
     background-color: #FBFBFD;
     z-index: 2;
     position: relative;
@@ -162,12 +161,14 @@
         max-width: 425px;
         height: 600px;
         flex-direction: column;
+        margin: 150px auto;
     }
 
     @media @tablet {
         max-width: 700px;
         height: 300px;
         flex-direction: row;
+        margin: 100px auto;
     }
 
     @media @laptop {
