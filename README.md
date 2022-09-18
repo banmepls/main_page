@@ -1,3 +1,5 @@
-# main_page
+# Main Page
 
-Hi my name is Bogdan and this is my portfolio site:)
+Hi, I'm Bogdan and this is my portfolio site:)
+
+Link: https://banmepls.github.io/main_page/
