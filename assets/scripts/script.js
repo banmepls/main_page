@@ -62,7 +62,7 @@ window.onscroll = () => {
         sectionImage2.style.left = `${pos - 2000}px`;
       }
     }
-    else {
+    if (designHead) {
       if (window.scrollY >= 400) {
         designHead.style.display = "none";
       }
