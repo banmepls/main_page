@@ -1,0 +1,77 @@
+// main: ../style.less
+
+.about_section {
+    margin-top: 100px;
+}
+
+.about_module {
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: #FBFBFD;
+
+    @media @mobile {
+        flex-direction: column;
+    }
+
+    @media @tablet {
+        flex-direction: row;
+    }
+}
+
+.about_text {
+    width: 650px;
+    padding: 0 100px;
+
+    @media @mobile {
+        width: 300px;
+        padding: 0 30px;
+    }
+
+    @media @tablet {
+        width: 300px;
+        padding: 0 30px;
+    }
+
+    @media @laptop {
+        width: 400px;
+        padding: 0 40px;
+    }
+
+    @media @laptop-l {
+        width: 500px;
+        padding: 0 50px;
+    }
+
+    @media @fhd-screen {
+        width: 650px;
+        padding: 0 100px;
+    }
+}
+
+.about_img {
+    height: 100%;
+
+    @media @mobile {
+        width: 300px;
+    }
+
+    @media @tablet {
+        width: 350px;
+    }
+
+    @media @laptop {
+        width: 450px;
+    }
+
+    @media @laptop-l {
+        width: 700px;
+    }
+
+    @media @fhd-screen {
+        width: 900px;
+    }
+}
