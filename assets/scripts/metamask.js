@@ -1,5 +1,6 @@
 const connectButton = document.getElementById("connect-button");
 const status = document.getElementById("status");
+const ethereumAmount = document.getElementById("ethereum-amount");
 
 connectButton.addEventListener("click", async () => {
     // Check if Metamask is installed
@@ -15,9 +16,35 @@ connectButton.addEventListener("click", async () => {
         // Do something with the connected wallet, such as fetching the user's account address
         const accounts = await window.ethereum.request({ method: "eth_accounts" });
         console.log("Connected account:", accounts[0]);
+
+        // Display The Ethereum on the Wallet
+        displayEthereumAmount();
     } catch (error) {
         // Handle errors that may occur during the connection process
         status.textContent = "Failed to connect to Metamask.";
         console.error(error);
     }
 });
+
+async function displayEthereumAmount() {
+    try {
+        // Check if Metamask is installed
+        if (typeof window.ethereum === "undefined") {
+            ethereumAmount.textContent = "Please install Metamask to view your wallet assets.";
+            return;
+        }
+
+        // Request access to the user's Metamask wallet
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const account = accounts[0];
+
+        // Get the amount of Ethereum in the connected wallet
+        const balance = await window.ethereum.request({ method: "eth_getBalance", params: [account] });
+        const etherAmount = window.web3.utils.fromWei(balance, "ether");
+        ethereumAmount.textContent = `${etherAmount} ETH`;
+    } catch (error) {
+        // Handle errors that may occur when fetching the Ethereum amount
+        ethereumAmount.textContent = "Failed to load Ethereum amount.";
+        console.error(error);
+    }
+}
