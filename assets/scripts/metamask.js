@@ -28,16 +28,6 @@ connectButton.addEventListener("click", async () => {
 
 async function displayEthereumAmount() {
     try {
-        // Check if Metamask is installed
-        if (typeof window.ethereum === "undefined") {
-            ethereumAmount.textContent = "Please install Metamask to view your wallet assets.";
-            return;
-        }
-
-        // Request access to the user's Metamask wallet
-        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-        const account = accounts[0];
-
         // Get the amount of Ethereum in the connected wallet
         const balance = await window.ethereum.request({ method: "eth_getBalance", params: [account] });
         const etherAmount = window.web3.utils.fromWei(balance, "ether");
