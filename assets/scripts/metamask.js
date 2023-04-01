@@ -33,7 +33,7 @@ async function displayEthereumAmount(account) {
 
         // Get the amount of Ethereum in the connected wallet
         const balance = await window.ethereum.request({ method: "eth_getBalance", params: [account] });
-        const etherAmount = parseFloat(window.ethereum.utils.fromWei(balance, "ether"));
+        const etherAmount = parseFloat(window.web3.utils.fromWei(balance, "ether"));
         ethereumAmount.textContent = `${etherAmount} ETH`;
     } catch (error) {
         // Handle errors that may occur when fetching the Ethereum amount
