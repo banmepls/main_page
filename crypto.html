@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Unavailable</title>
+    <link rel="stylesheet" href="assets/styles/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <nav class="global_nav" id="navBar">
+        <div class="global_nav_menu_icon" id="globalNavMenuIcon" onclick="globalNavMenuIcon(this)">
+            <div class="global_nav_menu_icon_bar1"></div>
+            <div class="global_nav_menu_icon_bar2"></div>
+        </div>
+        <div class="global_nav_div" id="globalNavDiv">
+            <ul class="global_nav_list">
+                <li class="global_nav_li">
+                    <a class="global_nav_a" href="index.html">
+                        <span class="nav_span">Home</span>
+                    </a>
+                </li>
+                <li class="global_nav_li">
+                    <a class="global_nav_a" href="design.html">
+                        <span class="nav_span">Design</span>
+                    </a>
+                </li>
+                <li class="global_nav_li">
+                    <a class="global_nav_a" href="code.html">
+                        <span class="nav_span">Code</span>
+                    </a>
+                </li>
+                <li class="global_nav_li">
+                    <a class="global_nav_a" href="unavailable.html">
+                        <span class="nav_span">Business</span>
+                    </a>
+                </li>
+                <li class="global_nav_li">
+                    <a class="global_nav_a" href="contact.html">
+                        <span class="nav_span">Contact</span>
+                    </a>
+                </li>
+                <li class="global_nav_li">
+                    <a class="global_nav_a" href="about.html">
+                        <span class="nav_span">About</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <main class="main" role="main" style="min-height: 3000px;">
+        <section>
+            <div class="section_module">
+                <div class="section_head">
+                    <h2 class="section_headline">Let's see what crypto assets you have</h2>
+                    <h3 class="section_subhead">First connect your wallet</h3>
+                </div>
+                <div id="metamask-connect" class="metamask_connect">
+                    <button id="connect-button">Connect with Metamask</button>
+                    <p id="status"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.6.1.js"></script>
+    <script src="assets/scripts/script.js"></script>
+    <script src="assets/scripts/metamask.js"></script>
+</body>
+
+</html>
