@@ -28,6 +28,9 @@ connectButton.addEventListener("click", async () => {
 
 async function displayEthereumAmount() {
     try {
+        // Display loading indicator
+        ethereumAmount.textContent = "Loading...";
+
         // Get the amount of Ethereum in the connected wallet
         const balance = await window.ethereum.request({ method: "eth_getBalance", params: [account] });
         const etherAmount = window.web3.utils.fromWei(balance, "ether");
@@ -38,3 +41,4 @@ async function displayEthereumAmount() {
         console.error(error);
     }
 }
+
