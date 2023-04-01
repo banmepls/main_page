@@ -17,7 +17,7 @@ connectButton.addEventListener("click", async () => {
         const accounts = await window.ethereum.request({ method: "eth_accounts" });
         console.log("Connected account:", accounts[0]);
 
-        // Display The Ethereum on the Wallet
+        // Display the Ethereum amount in the connected wallet
         displayEthereumAmount(accounts[0]);
     } catch (error) {
         // Handle errors that may occur during the connection process
@@ -32,8 +32,9 @@ async function displayEthereumAmount(account) {
         ethereumAmount.textContent = "Loading...";
 
         // Get the amount of Ethereum in the connected wallet
-        const balance = await window.ethereum.request({ method: "eth_getBalance", params: [account] });
-        const etherAmount = parseFloat(window.web3.utils.fromWei(balance, "ether"));
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const balance = await provider.getBalance(account);
+        const etherAmount = ethers.utils.formatEther(balance);
         ethereumAmount.textContent = `${etherAmount} ETH`;
     } catch (error) {
         // Handle errors that may occur when fetching the Ethereum amount
@@ -41,4 +42,3 @@ async function displayEthereumAmount(account) {
         console.error(error);
     }
 }
-
