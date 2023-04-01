@@ -18,7 +18,7 @@ connectButton.addEventListener("click", async () => {
         console.log("Connected account:", accounts[0]);
 
         // Display The Ethereum on the Wallet
-        displayEthereumAmount();
+        displayEthereumAmount(accounts[0]);
     } catch (error) {
         // Handle errors that may occur during the connection process
         status.textContent = "Failed to connect to Metamask.";
@@ -26,7 +26,7 @@ connectButton.addEventListener("click", async () => {
     }
 });
 
-async function displayEthereumAmount() {
+async function displayEthereumAmount(account) {
     try {
         // Display loading indicator
         ethereumAmount.textContent = "Loading...";
