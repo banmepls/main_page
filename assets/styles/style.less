@@ -1,0 +1,313 @@
+// compress: true
+@import "vars";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: @nav-height + 16px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+
+    @media @reduced-motion {
+        scroll-behavior: auto;
+    }
+}
+
+// column layout keeps the footer at the bottom of short pages
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 0;
+    min-width: 320px;
+    font-family: @font-text;
+    font-size: 17px;
+    line-height: 1.47059;
+    letter-spacing: -0.022em;
+    color: @ink;
+    background-color: @surface;
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+    // no scroll anchoring (browsers read it here, not on html): nothing on these pages loads in
+    // late, and when a recommendation opens or closes, the browser would otherwise move the page
+    // to hold some other element still, carrying the card being read off the screen
+    overflow-anchor: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 0;
+    font-family: @font-display;
+    font-weight: 600;
+    color: @ink;
+    text-wrap: balance;
+}
+
+p {
+    margin: 0 0 1em;
+    text-wrap: pretty;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+a {
+    color: @accent;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+:focus-visible {
+    outline: 2px solid @accent;
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+.main {
+    display: block;
+    flex: 1 0 auto;
+    padding-top: @nav-height;
+}
+
+.container {
+    width: 100%;
+    max-width: @container + 2 * @gutter;
+    margin: 0 auto;
+    padding: 0 @gutter;
+}
+
+.skip_link {
+    position: absolute;
+    top: -100px;
+    left: @gutter;
+    z-index: @z-skip;
+    padding: 10px 16px;
+    border-radius: @radius-sm;
+    background: @ink;
+    color: @on-dark;
+
+    &:focus {
+        top: 8px;
+    }
+}
+
+.visually_hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Sections and type scale */
+.section {
+    padding: @section-space 0;
+}
+
+.section_alt {
+    background-color: @surface-alt;
+}
+
+// two sections on the same background read as one, so the space between them isn't doubled
+// (the Home introduction counts as a white section)
+.section:not(.section_alt) + .section:not(.section_alt),
+.hero + .section:not(.section_alt),
+.section_alt + .section_alt {
+    padding-top: 0;
+}
+
+.eyebrow {
+    margin: 0 0 12px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: @ink-muted;
+}
+
+.page_title {
+    font-size: ~"clamp(40px, 6vw, 64px)";
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+}
+
+.section_title {
+    margin-bottom: 16px;
+    font-size: ~"clamp(30px, 4vw, 44px)";
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+.lead {
+    max-width: 40em;
+    font-size: ~"clamp(19px, 2vw, 21px)";
+    line-height: 1.42;
+    letter-spacing: 0.004em;
+    color: @ink-soft;
+}
+
+.section_head {
+    max-width: 44em;
+    margin-bottom: ~"clamp(32px, 5vw, 56px)";
+
+    .lead {
+        margin-bottom: 0;
+    }
+}
+
+// vertical padding only, so .container keeps its side gutters
+.page_head {
+    padding-top: @page-top;
+    padding-bottom: ~"clamp(40px, 6vw, 72px)";
+
+    // every page's introduction wraps at the same width: that of the Work page's one-line
+    // introduction (in em, so the lines break at the same words at every text size)
+    .lead {
+        max-width: 35.5em;
+        margin: 20px 0 0;
+    }
+
+    .actions {
+        margin-top: 28px;
+    }
+}
+
+/* Buttons and links */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 980px;
+    background-color: @accent;
+    color: #fff;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s @ease, transform 0.1s @ease;
+
+    &:hover {
+        background-color: @accent-hover;
+        text-decoration: none;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.link_arrow {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: @accent;
+    font: inherit;
+    cursor: pointer;
+
+    &::after {
+        content: "\00a0\203A";
+        content: ~'"\00a0\203A" / ""';
+    }
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+// external links end in ↗ and open in a new tab
+.link_external {
+    color: @accent;
+
+    &::after {
+        content: "\00a0\2197";
+        content: ~'"\00a0\2197" / ""';
+    }
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+}
+
+.chip {
+    padding: 3px 9px;
+    border-radius: 7px;
+    background-color: @surface-alt;
+    font-size: 13px;
+    letter-spacing: -0.005em;
+    color: @ink-soft;
+
+    .section_alt & {
+        background-color: @surface;
+    }
+}
+
+// the digits that count up are for the eye only: copying a figure takes the real value once
+.count_value {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* Scroll reveal, only once script.js is running */
+// things rise into place as they scroll into view; things that arrive together (a row of
+// cards, a title and its introduction) start 70 ms apart, set by script.js as --reveal-delay
+.reveal_ready .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s @ease-soft, transform 0.6s @ease-soft;
+    transition-delay: var(--reveal-delay, 0ms);
+
+    &.is_visible {
+        opacity: 1;
+        transform: none;
+    }
+
+    @media print {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Blocks */
+@import "blocks/global_nav.less";
+@import "blocks/footer.less";
+@import "blocks/home.less";
+@import "blocks/quotes.less";
+@import "blocks/work.less";
+@import "blocks/projects.less";
+@import "blocks/about.less";
+@import "blocks/contact.less";
+@import "blocks/motion.less";

@@ -1,0 +1,166 @@
+// main: ../style.less
+
+/* Recommendations on Home: an excerpt each, and a button that opens the full text in place */
+
+// one featured quote across the top, two below it
+.quotes {
+    display: grid;
+    gap: 16px;
+
+    @media @laptop {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+
+        // the two quotes below share a row: while one is open, the other keeps its own height
+        // instead of stretching to the long text beside it
+        &:has(> .quote:not(.quote_featured).is_open) {
+            align-items: start;
+        }
+    }
+}
+
+.quote {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: ~"clamp(28px, 4vw, 44px)";
+    border-radius: @radius-lg;
+    background-color: @surface-alt;
+    transition: background-color 0.2s @ease;
+
+    // with scripts the whole card opens and closes its recommendation, like its button
+    .js & {
+        cursor: pointer;
+
+        @media (hover: hover) {
+            &:hover {
+                background-color: darken(@surface-alt, 2.5%);
+
+                .quote_toggle_label {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}
+
+.quote_featured {
+    @media @laptop {
+        grid-column: 1 / -1;
+    }
+
+    .quote_text {
+        max-width: 30em;
+        font-size: ~"clamp(20px, 2.2vw, 26px)";
+        line-height: 1.24;
+        letter-spacing: -0.012em;
+    }
+}
+
+.quote_text {
+    margin: 0 0 28px;
+    font-family: @font-display;
+    font-size: ~"clamp(18px, 1.6vw, 19px)";
+    font-weight: 500;
+    line-height: 1.38;
+    letter-spacing: -0.006em;
+    color: @ink;
+    hanging-punctuation: first;
+
+    p {
+        margin: 0;
+    }
+
+    // with scripts the button follows the text, and carries the space before the person
+    .js & {
+        margin-bottom: 14px;
+    }
+}
+
+// the whole recommendation, swapped in for the excerpt in the same type, its paragraphs apart
+.quote_full {
+    p + p {
+        margin-top: 0.7em;
+    }
+
+    &:not([hidden]) {
+        animation: quote_open 0.5s @ease-soft;
+
+        @media @reduced-motion {
+            animation: none;
+        }
+    }
+}
+
+@keyframes quote_open {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+// a text button (it only works with scripts, so it only shows with them)
+.quote_toggle {
+    display: none;
+    align-self: flex-start;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 28px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: @accent;
+    font: inherit;
+    font-size: 15px;
+    cursor: pointer;
+
+    .js & {
+        display: inline-flex;
+    }
+}
+
+.quote_toggle_icon {
+    width: 12px;
+    height: 12px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.25s @ease;
+
+    [aria-expanded="true"] > & {
+        transform: rotate(180deg);
+    }
+}
+
+// the person: photo, name, then their title
+.quote_by {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: auto;
+}
+
+.quote_photo {
+    flex: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+.quote_name {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    color: @ink;
+}
+
+.quote_role {
+    display: block;
+    font-size: 14px;
+    line-height: 1.4;
+    color: @ink-muted;
+}

@@ -1,0 +1,44 @@
+// main: ../style.less
+
+.story {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+
+    & + & {
+        margin-top: ~"clamp(64px, 9vw, 112px)";
+    }
+
+    @media @tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: ~"clamp(40px, 6vw, 80px)";
+    }
+
+    p {
+        color: @ink-soft;
+    }
+}
+
+.story_reverse .story_image {
+    @media @tablet {
+        order: 2;
+    }
+}
+
+.story_image {
+    width: 100%;
+    border-radius: @radius-lg;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+
+.story_text {
+    max-width: 30em;
+}
+
+.story_title {
+    margin-bottom: 16px;
+    font-size: ~"clamp(28px, 3.4vw, 40px)";
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}

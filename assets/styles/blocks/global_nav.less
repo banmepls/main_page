@@ -1,0 +1,174 @@
+// main: ../style.less
+
+// the translucent, blurred glass shared by the bar and the mobile menu
+.nav_glass() {
+    background: @nav-bg;
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+}
+
+.global_nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: @z-nav;
+    letter-spacing: -0.01em;
+
+    // the bar's glass sits on a layer behind its content: an element with backdrop-filter
+    // stops its children from blurring the page, and the mobile menu is a child of the bar
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        .nav_glass();
+    }
+}
+
+.global_nav_inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: @nav-height;
+    font-size: 14px;
+}
+
+.global_nav_brand {
+    color: @on-dark;
+    font-weight: 600;
+    white-space: nowrap;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.global_nav_list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 28px;
+    list-style: none;
+}
+
+.global_nav_a {
+    color: @on-dark;
+    opacity: 0.8;
+    white-space: nowrap;
+    transition: opacity 0.2s @ease;
+
+    &:hover {
+        opacity: 1;
+        text-decoration: none;
+    }
+
+    &[aria-current="page"] {
+        opacity: 1;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 6px;
+    }
+}
+
+.global_nav_toggle {
+    display: none;
+}
+
+// small screens: links collapse into a panel opened by the menu button
+@media @below-tablet {
+    .js .global_nav_toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        margin-right: -12px;
+        padding: 0 12px;
+        border: 0;
+        background: none;
+        cursor: pointer;
+    }
+
+    .js .global_nav_toggle_bar {
+        display: block;
+        width: 17px;
+        height: 1.5px;
+        border-radius: 1px;
+        background-color: @on-dark;
+        transition: transform 0.3s @ease;
+    }
+
+    .js .global_nav.is_open .global_nav_toggle_bar:first-of-type {
+        transform: translateY(3.25px) rotate(45deg);
+    }
+
+    .js .global_nav.is_open .global_nav_toggle_bar:last-of-type {
+        transform: translateY(-3.25px) rotate(-45deg);
+    }
+
+    .js .global_nav_list {
+        position: absolute;
+        top: @nav-height;
+        right: 0;
+        left: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 8px @gutter 28px;
+        .nav_glass();
+        visibility: hidden;
+        // closed: clipped away to the bar's edge, so it opens downward from the bar
+        clip-path: inset(0 0 100% 0);
+        transition: clip-path 0.22s @ease-exit, visibility 0s linear 0.22s;
+
+        li {
+            opacity: 0;
+            transform: translateY(-8px);
+            transition: opacity 0.15s @ease-exit, transform 0.15s @ease-exit;
+        }
+
+        li + li {
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        @media @reduced-motion {
+            transition: visibility 0s;
+
+            li {
+                transition: none;
+            }
+        }
+    }
+
+    .js .global_nav.is_open .global_nav_list {
+        visibility: visible;
+        clip-path: inset(0);
+        transition: clip-path 0.4s @ease-soft, visibility 0s;
+
+        li {
+            opacity: 1;
+            transform: none;
+            transition: opacity 0.4s @ease-soft, transform 0.4s @ease-soft;
+        }
+
+        // the links follow the panel down, one after another
+        li:nth-child(2) { transition-delay: 35ms; }
+        li:nth-child(3) { transition-delay: 70ms; }
+        li:nth-child(4) { transition-delay: 105ms; }
+
+        @media @reduced-motion {
+            transition: none;
+
+            li {
+                transition: none;
+            }
+        }
+    }
+
+    .js .global_nav_list .global_nav_a {
+        display: block;
+        padding: 14px 0;
+        font-size: 17px;
+    }
+}

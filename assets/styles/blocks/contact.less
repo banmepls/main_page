@@ -1,0 +1,84 @@
+// main: ../style.less
+
+.contact_list {
+    max-width: 760px;
+    margin: 0;
+    border-top: 1px solid @line;
+}
+
+.contact_row {
+    display: grid;
+    // phones: the label on its own line, then the value with its Copy button beside it
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 2px 16px;
+    padding: 20px 0;
+    border-bottom: 1px solid @line;
+
+    @media @tablet {
+        grid-template-columns: 160px minmax(0, 1fr) auto;
+        gap: 2px 24px;
+    }
+
+    dt {
+        grid-column: 1 / -1;
+        font-size: 15px;
+        color: @ink-muted;
+
+        @media @tablet {
+            grid-column: auto;
+        }
+    }
+
+    dd {
+        margin: 0;
+        font-size: 19px;
+        overflow-wrap: anywhere;
+    }
+}
+
+.copy_button {
+    justify-self: start;
+    min-height: 32px;
+    padding: 0 14px;
+    border: 1px solid @line;
+    border-radius: 980px;
+    background: @surface;
+    color: @ink;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.2s @ease, background-color 0.2s @ease;
+
+    &:hover {
+        border-color: @ink-muted;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+// the button's label and its result sit one above the other; it shows one line and rolls up to
+// the result, then back (script.js builds this)
+.copy_roll {
+    display: block;
+    height: 1.5em;
+    overflow: hidden;
+    line-height: 1.5;
+
+    span {
+        display: block;
+        text-align: center;
+        transition: transform 0.45s @ease-soft;
+
+        @media @reduced-motion {
+            transition: none;
+        }
+    }
+
+    .is_done & span {
+        transform: translateY(-100%);
+    }
+}

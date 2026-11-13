@@ -1,0 +1,44 @@
+// main: style.less
+
+// breakpoints, mobile first
+@tablet: ~"(min-width: 768px)";
+@laptop: ~"(min-width: 1024px)";
+@below-tablet: ~"(max-width: 767px)";
+@reduced-motion: ~"(prefers-reduced-motion: reduce)";
+
+// colours: one cool grey family and one accent
+@ink: #1d1d1f;
+@ink-soft: #424245;
+@ink-muted: #6e6e73;
+@surface: #ffffff;
+@surface-alt: #f5f5f7;
+@line: #d2d2d7;
+@accent: #0066cc;
+@accent-hover: #0077ed;
+@accent-soft: #e6f0fa;
+@nav-bg: rgba(22, 22, 23, 0.8);
+@on-dark: #f5f5f7;
+
+// type: SF Pro on Apple devices, Segoe UI / Roboto elsewhere
+@font-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+@font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+// layout
+@container: 1080px;
+@gutter: 22px;
+@nav-height: 48px;
+@section-space: ~"clamp(64px, 9vw, 120px)";
+// from the menu bar to the first thing on a page (the Home introduction and every page title)
+@page-top: ~"clamp(56px, 8vw, 104px)";
+@radius-lg: 28px;
+@radius-md: 18px;
+@radius-sm: 10px;
+
+// z-index scale
+@z-nav: 100;
+@z-skip: 300;
+
+@ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+// entrances start fast and settle long; exits speed up as they leave
+@ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+@ease-exit: cubic-bezier(0.7, 0, 0.84, 0);

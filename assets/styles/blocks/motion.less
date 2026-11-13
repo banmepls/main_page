@@ -1,0 +1,214 @@
+// main: ../style.less
+
+/* Motion: how things arrive
+
+   One grammar for the whole site:
+   - entrances start fast and settle long (@ease-soft, 0.6–0.9 s, at most 24 px of travel);
+     exits speed up as they leave (@ease-exit, at most 0.3 s);
+   - things that arrive together start 35–70 ms apart, so a row reads as one movement;
+   - titles rise from behind a fixed edge instead of fading in;
+   - photos have no motion of their own: they only arrive with their card or story.
+   The scroll reveal itself is in style.less and script.js; the drawer, menu, recommendations
+   and copy button keep their motion with their own styles. Everything is off for visitors who
+   ask for reduced motion. */
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+}
+
+// rises from behind its own bottom edge: the clip moves down as fast as the element moves up, so
+// the edge stays put (the negative insets leave room for descenders and overhangs)
+@keyframes rise_mask {
+    from {
+        transform: translateY(100%);
+        clip-path: inset(-20% -10% 100% -10%);
+    }
+
+    to {
+        transform: none;
+        clip-path: inset(-20% -10% -20% -10%);
+    }
+}
+
+// the headline's words are boxes of their own (they still wrap like words)
+.hero_word {
+    display: inline-block;
+}
+
+/* Arrivals on load: the top of each page */
+@media (prefers-reduced-motion: no-preference) {
+    .js {
+        // Home: the portrait first, arriving like the About photos (a plain rise, nothing of its
+        // own), then the headline word by word, then what follows it
+        .hero_portrait {
+            animation: rise 0.6s @ease-soft both;
+        }
+
+        .hero .eyebrow {
+            animation: rise 0.6s @ease-soft 40ms both;
+        }
+
+        .hero_word {
+            animation: rise_mask 0.8s @ease-soft both;
+        }
+
+        .hero_lead {
+            animation: rise 0.7s @ease-soft 320ms both;
+        }
+
+        .hero .actions {
+            animation: rise 0.7s @ease-soft 420ms both;
+        }
+
+        .hero_social li,
+        .hero .stats > li {
+            animation: rise 0.6s @ease-soft both;
+        }
+
+        // other pages: the title rises, its introduction follows
+        .page_title {
+            animation: rise_mask 0.8s @ease-soft 60ms both;
+        }
+
+        .page_head .lead {
+            animation: rise 0.7s @ease-soft 220ms both;
+        }
+
+        .page_head .actions {
+            animation: rise 0.7s @ease-soft 300ms both;
+        }
+    }
+
+    .hero_word_delays(@i) when (@i <= 14) {
+        .js .hero_word:nth-child(@{i}) {
+            animation-delay: (120ms + (@i - 1) * 35ms);
+        }
+        .hero_word_delays(@i + 1);
+    }
+    .hero_word_delays(1);
+
+    .hero_social_delays(@i) when (@i <= 3) {
+        .js .hero_social li:nth-child(@{i}) {
+            animation-delay: (640ms + (@i - 1) * 60ms);
+        }
+        .hero_social_delays(@i + 1);
+    }
+    .hero_social_delays(1);
+
+    .stats_delays(@i) when (@i <= 4) {
+        .js .hero .stats > li:nth-child(@{i}) {
+            animation-delay: (520ms + (@i - 1) * 70ms);
+        }
+        .stats_delays(@i + 1);
+    }
+    .stats_delays(1);
+
+    // on phones and tablets the icons sit right under the portrait, above the headline: they
+    // arrive with the portrait instead of after the text
+    @media (max-width: 1023px) {
+        .hero_social_early(@i) when (@i <= 3) {
+            .js .hero_social li:nth-child(@{i}) {
+                animation-delay: (180ms + (@i - 1) * 60ms);
+            }
+            .hero_social_early(@i + 1);
+        }
+        .hero_social_early(1);
+    }
+}
+
+/* Arrivals on scroll (script.js marks them as they come into view) */
+
+// section titles rise from behind their own bottom edge (script.js marks them .reveal_mask)
+.reveal_ready .reveal.reveal_mask {
+    opacity: 1;
+    transform: translateY(100%);
+    clip-path: inset(-20% -10% 100% -10%);
+    transition: transform 0.8s @ease-soft, clip-path 0.8s @ease-soft;
+    transition-delay: var(--reveal-delay, 0ms);
+
+    &.is_visible {
+        transform: none;
+        clip-path: inset(-20% -10% -20% -10%);
+    }
+}
+
+// the Home timeline: each rule draws on from the left, then its row's text rises, row by row
+.timeline::before,
+.timeline_item::after {
+    transition: transform 0.7s @ease-soft;
+}
+
+.timeline_item > * {
+    transition: opacity 0.6s @ease-soft, transform 0.6s @ease-soft;
+}
+
+.reveal_ready .timeline.reveal {
+    // the list itself stays put: its rows arrive instead
+    opacity: 1;
+    transform: none;
+
+    &:not(.is_visible) {
+        &::before,
+        .timeline_item::after {
+            transform: scaleX(0);
+        }
+
+        .timeline_item > * {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+    }
+}
+
+// row by row, after the list's own turn in its arrival (--reveal-delay, inherited from the list)
+.timeline::before {
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.timeline_delays(@i) when (@i <= 6) {
+    .timeline_item:nth-child(@{i}) {
+        &::after {
+            transition-delay: ~"calc(var(--reveal-delay, 0ms) + @{i} * 70ms)";
+        }
+
+        > * {
+            transition-delay: ~"calc(var(--reveal-delay, 0ms) + 120ms + (@{i} - 1) * 70ms)";
+        }
+    }
+    .timeline_delays(@i + 1);
+}
+.timeline_delays(1);
+
+/* Case studies: the panel slides in (work.less) and its content rises in order, starting while
+   the panel is still moving, so the two read as one movement */
+@media (prefers-reduced-motion: no-preference) {
+    .drawer[open] {
+        .project_body > *,
+        .project_meta {
+            animation: rise 0.6s @ease-soft both;
+        }
+
+        .project_meta {
+            animation-delay: 500ms;
+        }
+    }
+
+    .drawer_delays(@i) when (@i <= 8) {
+        .drawer[open] .project_body > :nth-child(@{i}) {
+            animation-delay: (90ms + (@i - 1) * 55ms);
+        }
+        .drawer_delays(@i + 1);
+    }
+    .drawer_delays(1);
+}
+
+@media @reduced-motion {
+    .timeline::before,
+    .timeline_item::after,
+    .timeline_item > * {
+        transition: none;
+    }
+}

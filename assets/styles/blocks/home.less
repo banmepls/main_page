@@ -1,0 +1,437 @@
+// main: ../style.less
+
+/* Hero */
+// the space below is the same as between any two sections (the next one drops its own top space)
+.hero {
+    padding: @page-top 0 @section-space;
+}
+
+.hero_inner {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+
+    // side by side, the photo and the text start on the same line (the icons under the photo
+    // make that column taller, so centring would lift the photo above the text)
+    @media @laptop {
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+        align-items: start;
+        gap: 72px;
+    }
+}
+
+.hero_title {
+    font-size: ~"clamp(34px, 5.3vw, 58px)";
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+}
+
+.hero_lead {
+    margin: 24px 0 32px;
+}
+
+// the portrait with the contact icons under it: centred on phones and tablets,
+// in the right-hand column on laptops
+.hero_media {
+    display: grid;
+    justify-items: center;
+    gap: 16px;
+    justify-self: center;
+
+    @media @laptop {
+        order: 2;
+        justify-self: end;
+        width: 100%;
+        max-width: 380px;
+    }
+}
+
+.hero_portrait {
+    width: 132px;
+    border-radius: 24px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+
+    @media @laptop {
+        width: 100%;
+        border-radius: @radius-lg;
+    }
+}
+
+.hero_social {
+    display: flex;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.social_link {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: @surface-alt;
+    color: @ink;
+    transition: background-color 0.2s @ease, color 0.2s @ease, transform 0.2s @ease;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    &:hover {
+        background-color: @ink;
+        color: @on-dark;
+        text-decoration: none;
+    }
+
+    &:active {
+        transform: scale(0.94);
+    }
+
+    &:focus-visible {
+        border-radius: 50%;
+    }
+}
+
+// sized by eye, not by box: a square looks bigger than a circle of the same width
+.social_link_email svg {
+    width: 23px;
+    height: 23px;
+}
+
+.social_link_linkedin svg {
+    width: 17px;
+    height: 17px;
+}
+
+.social_link_github svg {
+    width: 19.5px;
+    height: 19.5px;
+}
+
+/* Key numbers: one row that scrolls sideways, four figures in view on laptops and two below; the
+   two buttons under it move it a page at a time (script.js), and touch and trackpad scrolling
+   snap to whole figures */
+.stats_band {
+    margin: ~"clamp(48px, 7vw, 80px)" 0 0;
+    padding: 32px 0 0;
+    border-top: 1px solid @line;
+}
+
+// under the figures, on the right (they only work with scripts, so they only show with them)
+.stats_controls {
+    display: none;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 28px;
+
+    .js & {
+        display: flex;
+    }
+}
+
+.stats_button {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: @surface-alt;
+    color: @ink;
+    cursor: pointer;
+    transition: background-color 0.2s @ease, color 0.2s @ease, transform 0.2s @ease;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    // only with a real pointer: on touch screens a tapped button would keep the dark colour
+    @media (hover: hover) {
+        &:hover:not(:disabled) {
+            background-color: @ink;
+            color: @on-dark;
+        }
+    }
+
+    &:active:not(:disabled) {
+        transform: scale(0.94);
+    }
+
+    &:focus-visible {
+        border-radius: 50%;
+    }
+
+    // at either end of the row
+    &:disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+}
+
+// At rest the row ends exactly at the text column, crisp, with nothing peeking in; while it moves,
+// its ends fade by --stats-fade (set by script.js from how far the row is from resting on whole
+// figures), so figures passing them aren't cut off.
+.stats {
+    --stats-fade: ~"0px";
+
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: ~"calc((100% - 24px) / 2)";
+    gap: 24px;
+    // the bottom padding leaves room for the figures to rise into place without being clipped
+    margin: 0 0 -24px;
+    padding: 0 0 24px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    list-style: none;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--stats-fade), #000 ~"calc(100% - var(--stats-fade))", transparent);
+    mask-image: linear-gradient(to right, transparent, #000 var(--stats-fade), #000 ~"calc(100% - var(--stats-fade))", transparent);
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    > li {
+        scroll-snap-align: start;
+    }
+
+    @media @laptop {
+        grid-auto-columns: ~"calc((100% - 3 * 24px) / 4)";
+    }
+}
+
+.stat_value {
+    display: block;
+    font-family: @font-display;
+    font-size: ~"clamp(32px, 4vw, 44px)";
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat_label {
+    display: block;
+    margin-top: 6px;
+    max-width: 16em;
+    font-size: 15px;
+    line-height: 1.4;
+    color: @ink-muted;
+}
+
+/* Selected work tiles */
+.tiles {
+    display: grid;
+    gap: 16px;
+
+    @media @laptop {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+}
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    padding: ~"clamp(28px, 4vw, 48px)";
+    border-radius: @radius-lg;
+    background-color: @surface-alt;
+    overflow: hidden;
+
+    p {
+        color: @ink-soft;
+    }
+
+    .link_arrow {
+        margin-top: auto;
+        padding-top: 8px;
+        align-self: flex-start;
+    }
+}
+
+.tile_wide {
+    @media @laptop {
+        grid-column: 1 / -1;
+    }
+}
+
+.tile_title {
+    margin-bottom: 12px;
+    font-size: ~"clamp(26px, 3vw, 34px)";
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+}
+
+.tile_with_image {
+    @media @laptop {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+        align-items: center;
+        gap: 40px;
+    }
+}
+
+// previews are drawn on the tile colour (@surface-alt), so they blend in without a frame
+.tile_image {
+    margin: 24px -16px -16px;
+
+    @media @laptop {
+        margin: -24px -32px -24px 0;
+    }
+}
+
+/* Experience snapshot */
+// the rules are lines drawn over transparent borders (which keep their space), so they can draw
+// on from the left as the list arrives
+.timeline {
+    position: relative;
+    border-top: 1px solid transparent;
+    list-style: none;
+
+    &::before {
+        top: -1px;
+    }
+}
+
+.timeline::before,
+.timeline_item::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background-color: @line;
+    transform-origin: left;
+}
+
+.timeline_item {
+    position: relative;
+    display: grid;
+    gap: 2px 24px;
+    padding: 18px 0;
+    border-bottom: 1px solid transparent;
+
+    &::after {
+        bottom: -1px;
+    }
+
+    @media @tablet {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: baseline;
+    }
+}
+
+.timeline_role,
+.timeline_company {
+    font-weight: 600;
+}
+
+.timeline_org {
+    color: @ink-muted;
+}
+
+.timeline_date {
+    font-size: 15px;
+    color: @ink-muted;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+
+    @media @tablet {
+        grid-row: 1 / span 2;
+        grid-column: 2;
+    }
+}
+
+// every entry is a company, its location and total dates, then its roles from the latest down
+// with a dot each; several roles at one company are joined by a line, so promotions read as one
+// progression and not as separate jobs (a role carries its own dates only when there are several)
+.timeline_roles {
+    grid-column: 1 / -1;
+    margin: 14px 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+        position: relative;
+        display: grid;
+        gap: 2px 24px;
+        padding: 0 0 14px 24px;
+
+        @media @tablet {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: baseline;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+
+        // the dot, centred on the role's first line
+        &::before {
+            content: "";
+            position: absolute;
+            top: ~"calc(0.5lh - 4px)";
+            left: 0;
+            z-index: 1;
+            width: 8px;
+            height: 8px;
+            border: 1.5px solid @ink-muted;
+            border-radius: 50%;
+            background-color: @surface-alt;
+        }
+
+        // the line down to the next role's dot
+        &:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 0.5lh;
+            left: 3.5px;
+            width: 1px;
+            height: 100%;
+            background-color: @line;
+        }
+
+        // the latest role's dot is filled
+        &:first-child::before {
+            background-color: @ink-muted;
+        }
+    }
+
+    // each role's dates sit on its own line, in the same right-hand column as the company's
+    .timeline_date {
+        grid-row: auto;
+    }
+}
+
+// the closing link of a section; no space below it, so every section ends at the same distance
+.section_more {
+    margin: 28px 0 0;
+}
+
+/* Closing call to action */
+.cta {
+    padding: ~"clamp(40px, 6vw, 72px)";
+    border-radius: @radius-lg;
+    background-color: @surface-alt;
+
+    .section_title {
+        max-width: 18em;
+    }
+
+    .lead {
+        margin-bottom: 28px;
+    }
+}

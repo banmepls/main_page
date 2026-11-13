@@ -1,0 +1,188 @@
+// main: ../style.less
+
+/* Project cards */
+// company work first (OneBCN, then Proceedit), then freelance, research and the thesis;
+// featured (full-width) cards take a whole row, and dense packing fills any gap they leave
+.project_grid {
+    display: grid;
+    grid-auto-flow: row dense;
+    gap: 20px;
+
+    @media @tablet {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+// a card is four lines of the grid (image, text, links, tags) shared with the card beside it,
+// so links and tags line up across a row whatever each card holds (a card without links
+// leaves its links line empty)
+.pcard {
+    display: grid;
+    grid-row: span 4;
+    grid-template-rows: subgrid;
+    row-gap: 0;
+    border-radius: @radius-lg;
+    background-color: @surface;
+    overflow: hidden;
+
+    // cards are white even inside grey sections, so their tags keep the grey pill
+    // (a white pill would vanish, leaving its text indented from the links above)
+    .chip {
+        background-color: @surface-alt;
+    }
+}
+
+.pcard_preview {
+    grid-row: 1;
+    margin: 10px 10px 0;
+    border-radius: @radius-md;
+    background-color: @surface-alt;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+
+    // featured cards wrap the image in <picture> to swap in a tall version on wide screens
+    picture {
+        display: contents;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.pcard_body {
+    grid-row: 2;
+    padding: 24px 28px 0;
+}
+
+.pcard_links {
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-self: start;
+    gap: 8px 24px;
+    padding: 20px 28px 0;
+}
+
+.pcard > .chips {
+    grid-row: 4;
+    align-content: flex-start;
+    padding: 16px 28px 28px;
+}
+
+.pcard_title {
+    margin-bottom: 10px;
+    font-size: 24px;
+    line-height: 1.17;
+    letter-spacing: -0.005em;
+}
+
+.pcard_text {
+    color: @ink-soft;
+}
+
+.pcard_role {
+    margin: -4px 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: @accent;
+}
+
+// two columns, each as wide as its widest figure, so four figures form an aligned 2 x 2 block
+.pcard_stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    gap: 14px 36px;
+    margin: 4px 0 20px;
+    list-style: none;
+
+    strong {
+        display: block;
+        font-family: @font-display;
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+        font-variant-numeric: tabular-nums;
+    }
+
+    // the label under each figure (only the li's own span: the figure itself holds spans too
+    // once its digits count up)
+    li > span {
+        display: block;
+        max-width: 13em;
+        font-size: 13px;
+        line-height: 1.3;
+        color: @ink-muted;
+    }
+}
+
+.pcard_wins {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 22px;
+    list-style: none;
+
+    li {
+        position: relative;
+        padding-left: 24px;
+        font-size: 15px;
+        line-height: 1.4;
+        color: @ink-soft;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0.15em;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23e6f0fa'/%3E%3Cpath d='M4.6 8.2l2.3 2.3 4.5-4.9' fill='none' stroke='%230066cc' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat;
+        }
+    }
+}
+
+// a featured card has the row to itself: the image on the left and, beside it, the same
+// pattern as the other cards: text at the top, links and tags at the bottom (the free
+// space the tall image leaves goes in between)
+.pcard_wide {
+    @media @laptop {
+        grid-column: 1 / -1;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+        grid-template-rows: auto 1fr auto auto;
+
+        // featured previews are drawn at the panel's proportions (about 0.8 to 1.0 wide-to-tall)
+        // with clear margins, so filling the panel only trims empty background
+        .pcard_preview {
+            grid-column: 1;
+            grid-row: 1 / -1;
+            margin: 10px 0 10px 10px;
+            aspect-ratio: auto;
+            min-height: 380px;
+        }
+
+        .pcard_body {
+            grid-column: 2;
+            grid-row: 1;
+            padding: 36px 40px 0;
+        }
+
+        .pcard_links {
+            grid-column: 2;
+            grid-row: 3;
+            padding: 20px 40px 0;
+        }
+
+        > .chips {
+            grid-column: 2;
+            grid-row: 4;
+            padding: 16px 40px 36px;
+        }
+
+        .pcard_title {
+            font-size: 30px;
+        }
+    }
+}

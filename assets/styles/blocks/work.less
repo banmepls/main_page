@@ -1,0 +1,269 @@
+// main: ../style.less
+
+/* Case studies */
+.project {
+    display: grid;
+    gap: 28px;
+
+    @media @laptop {
+        grid-template-columns: 260px minmax(0, 1fr);
+        gap: 64px;
+        align-items: start;
+    }
+}
+
+// the details column comes after the story in the markup (better on phones),
+// and moves to the left on wide screens
+.project_meta {
+    font-size: 15px;
+    color: @ink-muted;
+
+    @media @laptop {
+        order: -1;
+        position: sticky;
+        top: @nav-height + 32px;
+    }
+
+    dl {
+        display: grid;
+        gap: 14px;
+        margin: 0 0 20px;
+    }
+
+    dt {
+        font-size: 13px;
+        font-weight: 600;
+        color: @ink;
+    }
+
+    dd {
+        margin: 2px 0 0;
+    }
+}
+
+.project_title {
+    font-size: ~"clamp(30px, 4vw, 44px)";
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+}
+
+.project_body .lead {
+    margin: 16px 0 24px;
+}
+
+.highlights {
+    margin-top: 32px;
+    border-top: 1px solid @line;
+    list-style: none;
+
+    li {
+        padding: 18px 0;
+        border-bottom: 1px solid @line;
+        color: @ink-soft;
+    }
+
+    strong {
+        display: block;
+        margin-bottom: 4px;
+        color: @ink;
+        font-weight: 600;
+    }
+}
+
+/* Case studies open in a drawer from the right (a modal <dialog>) */
+.drawer {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: ~"min(720px, 100vw)";
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: @surface;
+    color: @ink;
+    box-shadow: -24px 0 60px rgba(29, 29, 31, 0.18);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    &::backdrop {
+        background: rgba(29, 29, 31, 0.45);
+    }
+
+    &[open] {
+        animation: drawer_in 0.55s @ease-soft;
+
+        &::backdrop {
+            animation: drawer_fade 0.45s @ease-soft;
+        }
+    }
+
+    &.is_closing {
+        animation: drawer_out 0.3s @ease-exit forwards;
+
+        &::backdrop {
+            animation: drawer_fade 0.3s @ease-exit reverse forwards;
+        }
+    }
+
+    @media @reduced-motion {
+        &[open],
+        &[open]::backdrop,
+        &.is_closing,
+        &.is_closing::backdrop {
+            animation: none;
+        }
+    }
+
+    // inside the drawer the case study is one column: the story, then its details
+    .project {
+        @media @laptop {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 32px;
+        }
+    }
+
+    .project_meta {
+        @media @laptop {
+            order: 0;
+            position: static;
+        }
+    }
+
+    .project_title {
+        font-size: ~"clamp(28px, 3.4vw, 36px)";
+    }
+}
+
+@keyframes drawer_in {
+    from {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes drawer_out {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes drawer_fade {
+    from {
+        opacity: 0;
+    }
+}
+
+// the page behind an open drawer stays still
+.drawer_open {
+    overflow: hidden;
+}
+
+.drawer_head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 60px;
+    padding: 0 16px 0 28px;
+    border-bottom: 1px solid @line;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+}
+
+.drawer_kicker {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: @accent;
+}
+
+// a drawn X (not the × character, whose position and weight depend on the font)
+.drawer_close {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background-color: @surface-alt;
+    color: @ink;
+    cursor: pointer;
+    transition: background-color 0.2s @ease, color 0.2s @ease, transform 0.2s @ease;
+
+    svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+    }
+
+    &:active {
+        transform: scale(0.94);
+    }
+
+    &:hover {
+        background-color: @ink;
+        color: @on-dark;
+    }
+
+    &:focus-visible {
+        border-radius: 50%;
+    }
+}
+
+.drawer_body {
+    padding: 28px 28px 56px;
+
+    @media @tablet {
+        padding: 32px 40px 64px;
+    }
+}
+
+/* Product-format case studies */
+.case_block {
+    margin-top: 28px;
+
+    p {
+        margin: 0;
+        color: @ink-soft;
+    }
+
+    .highlights {
+        margin-top: 4px;
+    }
+
+    // the wider case-study column fits more figures per row, in equal, aligned columns
+    .pcard_stats {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        margin-bottom: 0;
+    }
+}
+
+.case_label {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: @accent;
+}
+
+.case_list {
+    display: grid;
+    gap: 6px;
+    padding-left: 1.1em;
+    color: @ink-soft;
+
+    li::marker {
+        color: @accent;
+    }
+}
