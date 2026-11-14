@@ -112,9 +112,9 @@
     height: 19.5px;
 }
 
-/* Key numbers: one row that scrolls sideways, four figures in view on laptops and two below; the
-   two buttons under it move it a page at a time (script.js), and touch and trackpad scrolling
-   snap to whole figures */
+/* Key numbers: one row that goes round by itself a figure at a time, four figures in view on
+   laptops and two below; the two buttons under it move it a figure at a time too (script.js), and
+   touch and trackpad scrolling snap to whole figures */
 .stats_band {
     margin: ~"clamp(48px, 7vw, 80px)" 0 0;
     padding: 32px 0 0;
@@ -158,13 +158,13 @@
 
     // only with a real pointer: on touch screens a tapped button would keep the dark colour
     @media (hover: hover) {
-        &:hover:not(:disabled) {
+        &:hover {
             background-color: @ink;
             color: @on-dark;
         }
     }
 
-    &:active:not(:disabled) {
+    &:active {
         transform: scale(0.94);
     }
 
@@ -172,11 +172,6 @@
         border-radius: 50%;
     }
 
-    // at either end of the row
-    &:disabled {
-        opacity: 0.35;
-        cursor: default;
-    }
 }
 
 // At rest the row ends exactly at the text column, crisp, with nothing peeking in; while it moves,

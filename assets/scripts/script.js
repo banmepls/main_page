@@ -108,63 +108,130 @@ if (revealItems.length && "IntersectionObserver" in window && !reduceMotion) {
   revealItems.forEach((item) => observer.observe(item));
 }
 
-// Key numbers on Home: one row that scrolls sideways. The two buttons move it a page at a time and
-// switch off at either end (handing focus to the other button); touch and trackpad scrolling work
-// as usual. The row's ends fade only while they cut a figure (--stats-fade): fully while the row
-// moves fast, then by as much as it is still away from resting on whole figures as it slows down,
-// so the fade clears with the movement itself and is gone the moment the row lands.
+// Key numbers on Home: a row that moves one figure at a time and goes round for ever.
+// - It moves on by itself every few seconds, except with reduced motion, while the pointer rests on
+//   the figures or keyboard focus is in the band, while it is off screen and while the tab is
+//   hidden. After a click on its buttons, a swipe or a scroll, it waits a while, then carries on.
+// - A hidden copy of the figures follows the real ones. When the row comes to rest in the copy, it
+//   jumps back, without animation, to the same place among the real ones; going back from the first
+//   figure, it first jumps to the copy of it. The copy is hidden from screen readers.
+// - The row's ends fade only while they cut a figure (--stats-fade): fully while the row moves fast,
+//   then by as much as it is still away from resting on whole figures, so the fade clears with the
+//   movement itself and is gone the moment the row lands.
+const statsBand = document.querySelector(".stats_band");
 const statsRow = document.querySelector(".stats");
 const statsPrev = document.querySelector("[data-stats-prev]");
 const statsNext = document.querySelector("[data-stats-next]");
 
-if (statsRow && statsPrev && statsNext) {
-  const gap = () => parseFloat(getComputedStyle(statsRow).columnGap) || 0;
-  const wide = window.matchMedia("(min-width: 1024px)");
+if (statsBand && statsRow && statsPrev && statsNext) {
+  const EVERY = 3000;   // ms between automatic moves
+  const IDLE = 6000;    // ms after the visitor's last move before it carries on by itself
 
-  const updateButtons = () => {
-    const end = statsRow.scrollWidth - statsRow.clientWidth - 1;
-    [[statsPrev, statsRow.scrollLeft <= 1, statsNext], [statsNext, statsRow.scrollLeft >= end, statsPrev]]
-      .forEach(([button, off, other]) => {
-        if (off && document.activeElement === button) other.focus();
-        button.disabled = off;
-      });
+  const n = statsRow.children.length;
+  [...statsRow.children].forEach((li) => {
+    const copy = li.cloneNode(true);
+    copy.setAttribute("aria-hidden", "true");
+    statsRow.append(copy);
+  });
+
+  const wide = window.matchMedia("(min-width: 1024px)");
+  const figure = () => statsRow.firstElementChild.offsetWidth + (parseFloat(getComputedStyle(statsRow).columnGap) || 0);
+  let last = { x: statsRow.scrollLeft, t: performance.now() };
+
+  const jump = (left) => {
+    statsRow.scrollLeft = left;
+    last = { x: statsRow.scrollLeft, t: performance.now() };   // a jump is not movement: no fade
   };
   // speed in px per ms; 60 ms of travel at the current speed keeps the fade up between figures
   const paintFade = (speed) => {
-    const step = statsRow.firstElementChild.offsetWidth + gap();
+    const step = figure();
     const offset = statsRow.scrollLeft % step;
     const away = Math.min(offset, step - offset);
     const landed = away < 1 && speed < 0.2;   // resting on whole figures, or all but
     const fade = landed ? 0 : Math.min(wide.matches ? 64 : 40, Math.max(away, speed * 60));
     statsRow.style.setProperty("--stats-fade", `${fade.toFixed(1)}px`);
   };
-  const page = (direction) => {
-    statsRow.scrollBy({ left: direction * (statsRow.clientWidth + gap()), behavior: reduceMotion ? "auto" : "smooth" });
+  // where a move is heading (null when the visitor scrolls by hand); quick clicks build on it
+  let target = null;
+  const move = (direction) => {
+    const step = figure();
+    let from = target ?? statsRow.scrollLeft;
+    if (direction < 0 && from < 1) {
+      jump(statsRow.scrollLeft + n * step);
+      from += n * step;
+    }
+    target = Math.min(Math.round(from / step) * step + direction * step, statsRow.scrollWidth - statsRow.clientWidth);
+    statsRow.scrollTo({ left: target, behavior: reduceMotion ? "auto" : "smooth" });
   };
+
+  // when it plays by itself
+  let moving = false;
+  let onScreen = false;
+  let hovered = false;
+  let focused = false;
+  let resumeAt = 0;
+  const hold = () => {
+    resumeAt = performance.now() + IDLE;
+  };
+  const byHand = () => {
+    target = null;
+    hold();
+  };
+  const playing = () => onScreen && !document.hidden && !hovered && !focused && !moving && performance.now() >= resumeAt;
+  if (!reduceMotion) setInterval(() => playing() && move(1), EVERY);
+  new IntersectionObserver(([entry]) => {
+    onScreen = entry.isIntersecting;
+  }).observe(statsBand);
+  statsRow.addEventListener("pointerenter", (event) => {
+    hovered = event.pointerType === "mouse";
+  });
+  statsRow.addEventListener("pointerleave", () => {
+    hovered = false;
+  });
+  // keyboard focus only: a button clicked with the mouse keeps focus, and that shouldn't stop it
+  statsBand.addEventListener("focusin", (event) => {
+    focused = event.target.matches(":focus-visible");
+  });
+  statsBand.addEventListener("focusout", () => {
+    focused = false;
+  });
+  ["pointerdown", "wheel", "touchstart", "keydown"].forEach((type) => statsRow.addEventListener(type, byHand, { passive: true }));
+
+  statsPrev.addEventListener("click", () => {
+    hold();
+    move(-1);
+  });
+  statsNext.addEventListener("click", () => {
+    hold();
+    move(1);
+  });
 
   let frame = 0;
   let still;
-  let last = { x: statsRow.scrollLeft, t: performance.now() };
-  statsPrev.addEventListener("click", () => page(-1));
-  statsNext.addEventListener("click", () => page(1));
+  const settle = () => {
+    if (target !== null && Math.abs(statsRow.scrollLeft - target) > 2) return;   // still on its way
+    target = null;
+    moving = false;
+    if (statsRow.scrollLeft >= n * figure() - 1) jump(statsRow.scrollLeft - n * figure());
+    paintFade(0);
+  };
   statsRow.addEventListener("scroll", () => {
+    moving = true;
     frame ||= requestAnimationFrame((now) => {
       frame = 0;
       const speed = Math.abs(statsRow.scrollLeft - last.x) / Math.max(1, now - last.t);
       last = { x: statsRow.scrollLeft, t: now };
-      updateButtons();
       paintFade(speed);
-      // once the row stops (scrollend, or no movement for a moment), the fade clears
+      // once the row stops (scrollend, or no movement for a moment), it settles
       clearTimeout(still);
-      still = setTimeout(() => paintFade(0), 100);
+      still = setTimeout(settle, 120);
     });
   }, { passive: true });
-  statsRow.addEventListener("scrollend", () => paintFade(0));
-  window.addEventListener("resize", () => {
-    updateButtons();
-    paintFade(0);
+  statsRow.addEventListener("scrollend", () => {
+    clearTimeout(still);
+    settle();
   });
-  updateButtons();
+  window.addEventListener("resize", settle);
   paintFade(0);
 }
 
@@ -228,19 +295,26 @@ if (countItems.length && "IntersectionObserver" in window && !reduceMotion) {
     requestAnimationFrame(step);
   };
 
-  // (figures off to the side in the Home row count when the row brings them into view)
+  // the Home figures all count together when their band comes into view: they go round, and the
+  // ones off to the side (or in the hidden copy) must already show their values when they arrive
+  const groups = new Map();
+  items.forEach((item) => {
+    const trigger = item.el.closest(".stats_band") || item.el;
+    groups.set(trigger, [...(groups.get(trigger) || []), item]);
+  });
+
   const counter = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         counter.unobserve(entry.target);
-        count(items.get(entry.target));
+        groups.get(entry.target).forEach(count);
       });
     },
     { rootMargin: seenArea("-10%") }
   );
 
-  items.forEach((item) => counter.observe(item.el));
+  groups.forEach((_, trigger) => counter.observe(trigger));
 }
 
 // Recommendations on Home show an excerpt; the button under each swaps in the full text and back,

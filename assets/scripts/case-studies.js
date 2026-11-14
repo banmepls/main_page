@@ -33,7 +33,7 @@ const caseStudies = `
 						<li><strong>Sourced answers only</strong>The AI agent only cites live search results, and financial figures are computed by the server, never generated</li>
 						<li><strong>Founders first</strong>Pivoted to a founder-first product, with investor tools behind a single entry point and a paid plan enforced on the server</li>
 						<li><strong>AI-assisted, test-gated</strong>Built with Claude Code; 700+ automated tests and CI on every change decide what ships</li>
-						<li><strong>Cost control</strong>A token cost model with per-user spending limits for every AI feature: about €0.10 of AI cost per founder a month, on about €10 a month of hosting</li>
+						<li><strong>Cost control</strong>A token cost model with per-user spending limits for every AI feature: about €0.15 of AI cost per active user a month, on about €10 a month of hosting</li>
 						<li><strong>GDPR by design</strong>Firm-level data only, a source and date on every fact, signed opt-outs and 12-month retention</li>
 					</ul>
 				</div>
@@ -128,7 +128,7 @@ const caseStudies = `
 					<ul class="pcard_stats">
 						<li><strong>300+</strong><span>subscribers, paid and free trial, 60+ of them in the app</span></li>
 						<li><strong>3</strong><span>B2B API clients</span></li>
-						<li><strong>99.9%</strong><span>availability</span></li>
+						<li><strong>99.9%</strong><span>uptime</span></li>
 					</ul>
 				</div>
 			</div>
@@ -197,7 +197,7 @@ const caseStudies = `
 					<ul class="pcard_stats">
 						<li><strong>24+</strong><span>engines and reusable components</span></li>
 						<li><strong>~110 h</strong><span>of development saved across 4 apps by reusing components (~€1,100)</span></li>
-						<li><strong>~20%</strong><span>lower server costs, Exoscale → AWS</span></li>
+						<li><strong>~20%</strong><span>lower cloud costs, Exoscale → AWS</span></li>
 					</ul>
 				</div>
 			</div>
